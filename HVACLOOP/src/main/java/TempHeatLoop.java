@@ -2,18 +2,21 @@ package main.java;
 
 public class TempHeatLoop {
 
-    public int temp;
-    public int setpoint;
-    public double valveOut;
-    public static final int TEMP_MIN = 32;
-    public static final int TEMP_MAX = 212;
+    private double temp;
+    private double setpoint;
+    private double valveOut;
 
+    public static final double TEMP_MIN = 32.0;
+    public static final double TEMP_MAX = 212.0;
+    public double BIAS_VALVE_POSITION = 42.0;
     public TempHeatLoop () {
-        this.temp = 70;
-        this.setpoint = 70;
+        this.temp = 70.0;
+        this.setpoint = 70.0;
     }
+/* Getters and Setters
+*******************************************************************************************************/
 
-    public boolean setTemp ( int temp) {
+    public boolean setTemp ( double temp) {
 
         boolean success = false;
         if(temp < TEMP_MAX || temp >= TEMP_MIN) {
@@ -27,7 +30,7 @@ public class TempHeatLoop {
         return success;
     }
 
-        public boolean setSetPoint ( int setpoint) {
+        public boolean setSetPoint ( double setpoint) {
 
             boolean success = false;
             if(setpoint < TEMP_MAX || temp >= TEMP_MIN) {
@@ -41,8 +44,21 @@ public class TempHeatLoop {
             return success;
         }
 
-        public int getTemp () { return temp; }
-        public int getSetpoint () { return  setpoint;}
+        public double getTemp () { return temp; }
+        public double getSetpoint () { return  setpoint;}
 
+/*Methods
+        *********************************************************************************************************/
+
+       public double calcValvePosition (double temp, double setpoint) {
+            double valvePosition = BIAS_VALVE_POSITION;
+
+            valvePosition = valvePosition + ((setpoint - temp) / 100.0);
+
+            if( valvePosition<0 )   { valvePosition =0.0; }
+            if( valvePosition>100 ) { valvePosition =100.0; }
+
+            return valvePosition;
+        }
 
 }

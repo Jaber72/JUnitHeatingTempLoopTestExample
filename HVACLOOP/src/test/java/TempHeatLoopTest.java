@@ -15,10 +15,10 @@ public class TempHeatLoopTest {
 
 
         // exercise
-                boolean error = thl.setTemp(77);
-        int result = thl.getTemp();
+        boolean success = thl.setTemp(77.0);
+        double result = thl.getTemp();
         // Verify
-        assertEquals("Testing Temp Getter/Setter", 77, result);
+        assertEquals( "Testing Temp Getter/Setter", 77.0, result, 0.1 );
     }
 
     @Test
@@ -26,10 +26,21 @@ public class TempHeatLoopTest {
 
         TempHeatLoop thl = new TempHeatLoop();
 
-        boolean error = thl.setSetPoint(85);
-        int result = thl.getSetpoint();
+        boolean success = thl.setSetPoint(85.0);
+        double result = thl.getSetpoint();
 
-        assertEquals("Testing Setpoint Gettter/Setter", 85, result);
-        assertTrue(error);
+        assertEquals( "Testing Setpoint Getter/Setter", 85.0, result, 0.1 );
+        assertTrue("This call should return success", success);
+    }
+
+    @Test
+    public void happyPathCalcValvePosition() {
+        double temp = 72.0;
+        double setpoint = 65.0;
+
+        TempHeatLoop thl = new TempHeatLoop();
+
+        double result = thl.calcValvePosition(temp, setpoint);
+        assertEquals("message", thl.BIAS_VALVE_POSITION - .07, result, 0.009);
     }
 }
